@@ -9,18 +9,43 @@ $(document).ready(function() {
  * Function that is called when the document is ready.
  */
 function initializePage() {
-	console.log("Page ready");
+	console.log("HI");
  	initCamera();
  	initGestures();
  	initRSVPForm();
 }
 
+
+
+function tapholdHandler(event){
+	var targetIDPrefix = event.target.id; 
+	console.log("got prefix: " + targetIDPrefix); 
+	$("#"+ targetIDPrefix + "-bio").show(); 
+}
+
+
+
 // init jQuery gestures  
 function initGestures() {
-	// add gestures listener here
+	//add gestures listener here
+	$(function(){
+		$(".judge-img").bind("taphold", tapholdHandler); 
+
+			});
 }
 
 // init RSVP form submit listener
 function initRSVPForm() {
+	$('rsvpForm').submit(function(e){
+		e.preventDefault(); 
+		console.log("submitting form...")
+		var rsvpEmail = $('#rsvpEmail').val(); 
+		$.post('addRSVP', {rsvpEmail: rsvpEmail }, postCallback); 
+	}); 
+
+function postCallback(res){
+	alert("RSVP form successfully submitted!"); 
+	$('rsvpEmail').val(''); 
   // add your code here
+}
 }
